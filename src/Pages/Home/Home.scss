@@ -1,0 +1,30 @@
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttons {
+  min-width: 100px;
+}
+
+.home2 {
+  padding-top: 2em;
+  z-index: 1;
+}
+
+.home1::after {
+  content: '';
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-image: linear-gradient(to top, #121212, rgba(0, 0, 0, 0));
+}
