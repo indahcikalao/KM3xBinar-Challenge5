@@ -15,6 +15,7 @@ export default function SearchBar() {
         input="submit"
         hidden
         size="small"
+        sx={{ minWidth: '350px' }}
         placeholder="Search a Movie"
         InputProps={{
           endAdornment: (
