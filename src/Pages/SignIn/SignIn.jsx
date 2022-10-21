@@ -10,7 +10,10 @@ import {
   Typography,
   Container,
   Divider,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
+import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import axios from 'axios';
 import GoogleLogin from '../../Components/GoogleLogin/GoogleLogin';
 import Success from '../../Components/Success/Success';
@@ -22,6 +25,7 @@ export default function SignIn() {
   const [token, setToken] = useState(null);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const getToken = localStorage.getItem('token');
@@ -124,9 +128,20 @@ export default function SignIn() {
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   value={password}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}>
+                          {!showPassword ? <BsEyeFill /> : <BsEyeSlashFill />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
                 />
@@ -135,6 +150,7 @@ export default function SignIn() {
                   label="Remember me"
                 />
                 <Button
+                  disabled={!email || !password}
                   type="submit"
                   fullWidth
                   variant="contained"

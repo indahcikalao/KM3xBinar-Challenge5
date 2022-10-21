@@ -9,7 +9,10 @@ import {
   Container,
   Link,
   Divider,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
+import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 import './Register.scss';
 import GoogleLogin from '../../Components/GoogleLogin/GoogleLogin';
 import Success from '../../Components/Success/Success';
@@ -22,6 +25,7 @@ export default function Register() {
   const [token, setToken] = useState(null);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const getToken = localStorage.getItem('token');
@@ -137,19 +141,36 @@ export default function Register() {
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
+                      margin="normal"
                       required
                       fullWidth
                       name="password"
                       label="Password"
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       id="password"
-                      autoComplete="new-password"
                       value={password}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={() => setShowPassword(!showPassword)}>
+                              {!showPassword ? (
+                                <BsEyeFill />
+                              ) : (
+                                <BsEyeSlashFill />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                       onChange={(e) => setPassword(e.target.value)}
+                      autoComplete="current-password"
                     />
                   </Grid>
                 </Grid>
                 <Button
+                  disabled={!email || !name || !password}
                   type="submit"
                   fullWidth
                   variant="contained"
