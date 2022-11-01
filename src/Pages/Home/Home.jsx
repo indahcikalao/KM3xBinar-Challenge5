@@ -1,37 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Container, Grid, Button } from '@mui/material';
 import MovieCard from '../../Components/MovieCard/MovieCard';
 import MovieCaro from '../../Components/MovieCaro/MovieCaro';
 import './Home.scss';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getPopularMovies,
+  getTrendingMovies,
+} from '../../redux/actions/movieAction';
+
 export default function Home() {
-  const BASE_ULR = 'https://api.themoviedb.org/3';
-  const API_KEY = 'api_key=79749ec83b0a508fa2fb96fa8880ea24';
-  const [movies, setMovies] = useState([]);
-  const [caro, setCaro] = useState([]);
   const [numItems, setNumItems] = useState(6);
   const [clicked, setClicked] = useState(false);
-  const slice = movies.slice(0, numItems);
-  const caroSlice = caro.slice(0, 5);
 
-  const fetchPopular = async () => {
-    const res = await axios.get(`${BASE_ULR}/movie/popular?${API_KEY}`);
-    console.log(res.data.results);
-    setMovies(res.data.results);
-  };
+  const movies = useSelector((state) => state.movie.popular);
+  const caro = useSelector((state) => state.movie.trending);
+  const caroSlice = caro?.slice(0, 5);
+  const slice = movies?.slice(0, numItems);
 
-  const fetchTrending = async () => {
-    const res = await axios.get(`${BASE_ULR}/trending/movie/day?${API_KEY}`);
-    console.log(res.data.results);
-    setCaro(res.data.results);
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchPopular();
-    fetchTrending();
-  }, []);
+    dispatch(getPopularMovies());
+    dispatch(getTrendingMovies());
+  }, [dispatch]);
 
   const renderMovies = () =>
     slice.map((movie) => <MovieCard key={movie.id} movie={movie} />);

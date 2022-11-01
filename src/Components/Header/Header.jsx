@@ -56,7 +56,7 @@ export default function Header() {
         align="center"
         sx={{ mt: 4, mb: 4 }}>
         {
-          'Kampus Merdeka 3 X Binar Academy - Challenge Chapter 5 dan 6 - Copyright © indahcikalao '
+          'Kampus Merdeka 3 X Binar Academy - Challenge Chapter 5, 6, dan 7 - Copyright © indahcikalao '
         }
         {new Date().getFullYear()}
         {'.'}

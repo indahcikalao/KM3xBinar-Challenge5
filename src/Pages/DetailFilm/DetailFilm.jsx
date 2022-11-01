@@ -1,19 +1,21 @@
 import React from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BsStar } from 'react-icons/bs';
 import { Card, CardMedia, Grid, Button } from '@mui/material';
 import Trailer from '../../Components/Trailer/Trailer';
 import './DetailFilm.scss';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { getMovieDetail } from '../../redux/actions/movieAction';
+
 export default function DetailFilm() {
   const params = useParams();
-  const [movies, setMovies] = useState([]);
-  const BASE_ULR = 'https://api.themoviedb.org/3';
-  const API_KEY = 'api_key=79749ec83b0a508fa2fb96fa8880ea24';
+  const dispatch = useDispatch();
+  const movies = useSelector((state) => state.movie.detail);
+
   const BASE_IMG = 'https://image.tmdb.org/t/p/original';
-  const rating = Math.round((movies.vote_average * 100) / 2) / 100;
+  const rating = Math.round((movies?.vote_average * 100) / 2) / 100;
   const styles = {
     media: {
       height: '100vh',
@@ -36,16 +38,13 @@ export default function DetailFilm() {
 
   useEffect(() => {
     if (params.id) {
-      axios.get(`${BASE_ULR}/movie/${params.id}?${API_KEY}`).then((res) => {
-        console.log(res.data);
-        setMovies(res.data);
-      });
+      dispatch(getMovieDetail(params.id));
     }
-  }, [params.id]);
+  }, [params.id, dispatch]);
 
   return (
     <>
-      {movies.length !== 0 && (
+      {movies && (
         <div className="detail">
           <Card style={styles.card}>
             <CardMedia
@@ -68,7 +67,6 @@ export default function DetailFilm() {
                 {movies.genres.map((item) => (
                   <Button
                     key={item.id}
-                    disabled="true"
                     variant="outlined"
                     color="secondary"
                     style={{ minWidth: '100px', marginRight: '5px' }}>
