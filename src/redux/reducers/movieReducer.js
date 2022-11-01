@@ -1,9 +1,4 @@
-import {
-  GET_POPULAR_MOVIES,
-  GET_MOVIE_DETAIL,
-  GET_MOVIE_SEARCH,
-  GET_TRENDING_MOVIES,
-} from '../types';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   popular: [],
@@ -12,31 +7,30 @@ const initialState = {
   searchRes: [],
 };
 
-const movieReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case GET_POPULAR_MOVIES:
-      return {
-        ...state,
-        popular: action.payload.results,
-      };
-    case GET_TRENDING_MOVIES:
-      return {
-        ...state,
-        trending: action.payload.results,
-      };
-    case GET_MOVIE_DETAIL:
-      return {
-        ...state,
-        detail: action.payload,
-      };
-    case GET_MOVIE_SEARCH:
-      return {
-        ...state,
-        searchRes: action.payload.results,
-      };
-    default:
-      return state;
-  }
-};
+const movieSlicer = createSlice({
+  name: 'movie',
+  initialState,
+  reducers: {
+    getPopularMoviesReducer: (state, action) => {
+      state.popular = action.payload.results;
+    },
+    getTrendingMoviesReducer: (state, action) => {
+      state.trending = action.payload.results;
+    },
+    getMovieDetailReducer: (state, action) => {
+      state.detail = action.payload;
+    },
+    getSearchResultsReducer: (state, action) => {
+      state.searchRes = action.payload.results;
+    },
+  },
+});
 
-export default movieReducer;
+export const {
+  getPopularMoviesReducer,
+  getTrendingMoviesReducer,
+  getMovieDetailReducer,
+  getSearchResultsReducer,
+} = movieSlicer.actions;
+
+export default movieSlicer.reducer;
